@@ -22,6 +22,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "Employee")
 public class Employee {
@@ -31,6 +33,8 @@ public class Employee {
 	private int id;
 	// fname should not be null or empty
 	// fname should have at least 2 characters
+
+	@ApiModelProperty(notes = "First name of Employee")
 	@NotEmpty
 	@Size(min = 2, message = "fname should have at least 2 characters")
 	@Column(name = "fname")
@@ -38,6 +42,7 @@ public class Employee {
 
 	// lname should not be null or empty
 	// lname should have at least 2 characters
+	@ApiModelProperty(notes = "Last name of Employee")
 	@NotEmpty
 	@Size(min = 2, message = "lname should have at least 2 characters")
 	@Column(name = "lname")
@@ -45,6 +50,7 @@ public class Employee {
 
 	// email should be valid email format
 	// email should not be null or empty
+	@ApiModelProperty(notes = "Email of Employee")
 	@NotEmpty
 	@Email
 	@Column(name = "email")
@@ -52,15 +58,19 @@ public class Employee {
 
 	// phone should be exact 10 characters
 	// phone should not be null or empty
-	@Range(min = 10,max= 10, message = "phone should be exact 10 characters" )
+	@ApiModelProperty(notes = "Phone_no of Employee",allowableValues = "range[10,10)")
+	//@Range(min = 10, max = 10, message = "phone should be exact 10 characters")
 	// @Size(min = 10, max = 10, message = "phone should be exact 10 characters")
 	@Column(name = "phone")
 	private BigInteger phone;
 
+	@ApiModelProperty(notes = "Date Of birth of Employee")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	@JsonFormat(pattern = "yyyy/MM/dd")
 	@Column(name = "dob")
 	private LocalDate dob;
+
+	@ApiModelProperty(notes = "City Where Employee belongs to")
 	@NotEmpty
 	@Column(name = "city")
 	private String city;
@@ -119,6 +129,25 @@ public class Employee {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public Employee(int id, @NotEmpty @Size(min = 2, message = "fname should have at least 2 characters") String fname,
+			@NotEmpty @Size(min = 2, message = "lname should have at least 2 characters") String lname,
+			@NotEmpty @Email String email,
+			@Range(min = 10, max = 10, message = "phone should be exact 10 characters") BigInteger phone, LocalDate dob,
+			@NotEmpty String city) {
+		super();
+		this.id = id;
+		this.fname = fname;
+		this.lname = lname;
+		this.email = email;
+		this.phone = phone;
+		this.dob = dob;
+		this.city = city;
+	}
+
+	public Employee() {
+
 	}
 
 	@Override

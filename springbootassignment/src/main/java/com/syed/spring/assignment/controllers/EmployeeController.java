@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.syed.spring.assignment.entity.Employee;
 import com.syed.spring.assignment.services.EmployeeService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
-@RequestMapping("/api/employees")
+@RequestMapping("/api")
 public class EmployeeController {
 	@Autowired
 	EmployeeService service;
@@ -28,24 +30,27 @@ public class EmployeeController {
 	public Iterable<Employee> listAllEmployees() {
 		return service.listAllEmployees();
 	}
-
+	
+	@ApiOperation(value="Insert Employee Details")
 	@PostMapping("/create")
 	public ResponseEntity<Employee> create(@Valid  @RequestBody Employee employee) {
 		Employee savedEmployee = service.create(employee);
 		return new ResponseEntity<Employee>(savedEmployee, HttpStatus.CREATED);
 	}
-
+	@ApiOperation(value="Update Employee Details")
 	@PostMapping("/update")
 	public ResponseEntity<Employee> update(@Valid @RequestBody Employee employee) {
 		Employee savedEmployee = service.update(employee);
 		return new ResponseEntity<Employee>(savedEmployee, HttpStatus.CREATED);
 	}
-
+	
+	@ApiOperation(value="Fetch The Employee with his id")
 	@GetMapping("/read/{id}")
 	public Optional<Employee> read(@PathVariable("id") int id) {
 		return service.read(id);
 	}
-
+	
+	@ApiOperation(value="Delete Employee with id")
 	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable("id") int id) {
 		service.delete(id);
